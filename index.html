@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>YouTube Sort</title>
+
+  <style>
+    a {
+      text-decoration: none;
+      border-bottom: 1px solid;
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    main {
+      padding-top: 1em;
+      text-align: center;
+      width: 600px;
+      margin: auto;
+    }
+
+    #textarea {
+      width: 500px;
+      height: 100px;
+
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    #bookmarklet {
+      font-size: 200%;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>YouTube sort</h1>
+    <p>Script for sorting youtube links by view count or average rating. Perfect for youtube playlists. Runs in your browser.</p>
+
+    <h2>Install</h2>
+    <p>Drag this link to bookmarks:</p>
+    <p>
+      <a id="bookmarklet" href="javascript:(async () => { try { const script = await fetch('https://agentcooper.github.io/youtube-sort/browser.js').then(res => res.text()); eval(script); } catch(e) { document.write(`Something went wrong, please refer to <a href='https://agentcooper.github.io/youtube-sort'>script homepage</a> for latest updates.`); } })()">YouTube sort</a>
+    </p>
+
+    <p style="margin-top: 3em;">Or create bookmark manually with the following url:</p>
+
+    <div>
+      <textarea id="textarea"></textarea>
+      <script>
+        document.querySelector("#textarea").innerHTML = document.querySelector("#bookmarklet").getAttribute("href");
+      </script>
+    </div>
+
+    <h2>Compatibility</h2>
+    <p>Tested in Chrome 65 and Safari 11.</p>
+
+    <h2>Source</h2>
+
+    <a href="https://agentcooper.github.io/youtube-sort">https://agentcooper.github.io/youtube-sort</a>
+  </main>
+</body>
+
+</html>
