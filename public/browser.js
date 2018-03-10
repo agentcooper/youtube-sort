@@ -123,20 +123,12 @@ function logStatus(done, total) {
 
 async function main() {
   if (!isOnYoutube()) {
-    alert(`
-      You don't seem to be on youtube.com.
-
-      (window.ytcfg is missing)
-    `.trim());
+    alert(`You don't seem to be on youtube.com.\n\n(window.ytcfg is missing)`);
     return;
   }
 
   if (!isLoggedIn()) {
-    alert(`
-      You need to be logged in to use YouTube sort.
-
-      If you're logged in, please refresh your browser and try again.
-    `.trim());
+    alert(`You need to be logged in to use YouTube sort.\n\nIf you're logged in, please refresh your browser and try again.`);
     return;
   }
 
