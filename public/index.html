@@ -65,7 +65,7 @@
         <kbd>⌘ Command + ⇧ Shift + B</kbd> for bookmarks bar)</div>
     </div>
     <p>
-      <a onclick="alert('Drag this link to your bookmarks.'); return false;" id="bookmarklet" href="javascript:(async () => { try { const script = await fetch('https://agentcooper.github.io/youtube-sort/browser.js').then(res => res.text()); eval(script); } catch(e) { document.write(`Something went wrong, please refer to <a href='https://agentcooper.github.io/youtube-sort'>script homepage</a> for latest updates.`); } })()">YouTube sort</a>
+      <a onclick="alert('Drag this link to your bookmarks.'); return false;" id="bookmarklet" href="javascript:(async () => { try { const script = await fetch('https://agentcooper.github.io/youtube-sort/browser.js', { cache: 'reload' }).then(res => res.text()); eval(script); } catch(e) { document.write(`Something went wrong, please refer to <a href='https://agentcooper.github.io/youtube-sort'>script homepage</a> for latest updates.`); } })()">YouTube sort</a>
     </p>
 
     <p style="margin-top: 3em;">Or create bookmark manually with the following url:</p>
