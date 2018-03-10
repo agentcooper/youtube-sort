@@ -1,0 +1,25 @@
+{
+  "name": "youtube-sort",
+  "version": "1.0.0",
+  "description": "https://agentcooper.github.io/youtube-sort/",
+  "main": "browser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentcooper/youtube-sort.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agentcooper/youtube-sort/issues"
+  },
+  "scripts": {
+    "deploy": "gh-pages --dist public"
+  },
+  "homepage": "https://github.com/agentcooper/youtube-sort#readme",
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
+  }
+}
