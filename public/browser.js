@@ -33,13 +33,26 @@ function isLoggedIn() {
   return Boolean(window.ytcfg && ytcfg.get("ID_TOKEN"));
 }
 
+function getVersion() {
+  const clientVersion = ytcfg.get("INNERTUBE_CONTEXT_CLIENT_VERSION");
+
+  const isMajorVersion1 = String(clientVersion).indexOf("1.") === 0;
+
+  // backend does not output json for version 1.*
+  if (isMajorVersion1) {
+    return "2.20180308";
+  }
+
+  return clientVersion;
+}
+
 async function getVideoJSON(id) {
   return fetch(`/watch?v=${id}&pbj=1`, {
     credentials: 'same-origin', headers: {
       "x-spf-referer": location.href,
       "x-youtube-client-name": "1",
-      "x-youtube-client-version": ytcfg.get("INNERTUBE_CONTEXT_CLIENT_VERSION"),
-      "x-youtube-identity-token": ytcfg.get("ID_TOKEN"),
+      "x-youtube-client-version": getVersion(),
+      "x-youtube-identity-token": ytcfg.get("ID_TOKEN")
     }
   }).then(res => res.json());
 }
@@ -50,7 +63,7 @@ function isHidden(el) {
 
 function getPageUrls() {
   return Array.from(
-    document.querySelectorAll(".yt-simple-endpoint[href^='/watch']")
+    document.querySelectorAll("a[href^='/watch']")
   ).filter(a => !isHidden(a)).map(a => a.getAttribute("href"));
 }
 
