@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>YouTube Sort</title>
+  <title>YouTube sort</title>
 
   <style>
     a {
@@ -13,6 +13,7 @@
     body {
       padding: 1em 0em 5em;
       font-family: 'Courier New', Courier, monospace;
+      text-align: center;
     }
 
     main {
@@ -33,13 +34,19 @@
     img {
       max-width: 450px;
     }
+
+    .mac-hint {
+      margin: 0;
+      padding: 0;
+      font-size: 80%;
+    }
   </style>
 </head>
 
 <body>
   <main style="display: flex; flex-direction: column; align-items: center;">
     <h1>YouTube sort</h1>
-    <p style="max-width: 600px; text-align: center;">Sort youtube videos by view count or average rating. Perfect for youtube playlists. Runs in your browser.</p>
+    <p style="max-width: 600px;">Sort youtube videos by view count or average rating. Perfect for youtube playlists. Runs in your browser.</p>
 
     <div style="display: flex; align-items: center;">
       <a href="screenshots/before.png" target="_blank" style="border: none; cursor: zoom-in;">
@@ -52,7 +59,11 @@
     </div>
 
     <h2>Install</h2>
-    <p>Drag this link to bookmarks:</p>
+    <div>
+      Drag this link to bookmarks:
+      <div style="display: none;" class="mac-hint">(Press
+        <kbd>⌘ Command + ⇧ Shift + B</kbd> for bookmarks bar)</div>
+    </div>
     <p>
       <a onclick="alert('Drag this link to your bookmarks.'); return false;" id="bookmarklet" href="javascript:(async () => { try { const script = await fetch('https://agentcooper.github.io/youtube-sort/browser.js').then(res => res.text()); eval(script); } catch(e) { document.write(`Something went wrong, please refer to <a href='https://agentcooper.github.io/youtube-sort'>script homepage</a> for latest updates.`); } })()">YouTube sort</a>
     </p>
@@ -79,6 +90,18 @@
 
     <a href="https://github.com/agentcooper/youtube-sort">https://github.com/agentcooper/youtube-sort</a>
   </main>
+
+  <script>
+    const isMac = navigator.userAgent.indexOf('Mac OS X') != -1;
+
+    Array.from(document.querySelectorAll('.mac-hint')).forEach(element => {
+      if (!isMac) {
+        return;
+      }
+
+      element.style.display = '';
+    });
+  </script>
 </body>
 
 </html>
