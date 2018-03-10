@@ -25,6 +25,10 @@ function cache(fn) {
   }
 }
 
+function isLoggedIn() {
+  return Boolean(ytcfg.get("ID_TOKEN"));
+}
+
 async function getVideoJSON(id) {
   return fetch(`/watch?v=${id}&pbj=1`, {
     credentials: 'same-origin', headers: {
@@ -114,6 +118,11 @@ function logStatus(done, total) {
 }
 
 async function main() {
+  if (!isLoggedIn()) {
+    alert("You need to be logged in to use YouTube sort.\n\nIf you're logged in, please refresh your browser and try again.");
+    return;
+  }
+
   const ids = getPageIds();
   console.log(`Found ${ids.length} videos`);
 
