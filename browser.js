@@ -130,7 +130,14 @@ function print(videos, sortKey) {
 }
 
 function logStatus(done, total) {
-  document.write(`Processing videos: ${done} out of ${total}`);
+  document.write(`
+    <main style="font-family: Roboto, Arial, sans-serif;">
+      <div style="display: inline-block;">
+        <p>Processing videos: ${done} out of ${total}</p>
+        <div><progress style="width: 100%;" value="${done}" max="${total}"></progress></div>
+      </div>
+    </main>
+  `);
   document.close();
 }
 
