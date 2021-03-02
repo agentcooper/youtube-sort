@@ -91,16 +91,18 @@ async function getVideoDetails(id) {
     console.error(`Failed to get videoDetails from`, jsonArray);
   }
 }
-// taken from https://web.archive.org/web/20200628093730/www.4codev.com/javascript/convert-seconds-to-time-value-hours-minutes-seconds-idpx6943853585885165320.html
-function convertHMS(value) {
-    const sec = parseInt(value, 10);
-    let hours   = Math.floor(sec / 3600);
-    let minutes = Math.floor((sec - (hours * 3600)) / 60);
-    let seconds = sec - (hours * 3600) - (minutes * 60);
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return hours+':'+minutes+':'+seconds; 
+
+function myTime(time) {
+            var hr = ~~(time / 3600);
+            var min = ~~((time % 3600) / 60);
+            var sec = time % 60;
+            var sec_min = "";
+            if (hr > 0) {
+               sec_min += "" + hrs + ":" + (min < 10 ? "0" : "");
+            }
+            sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
+            sec_min += "" + sec;
+            return sec_min;
 }
 		 
 function youtubeLink(videoId, children) {
@@ -113,7 +115,6 @@ function youtubeAuthorLink(channelId, children) {
 
 function print(videos, sortKey) {
   const sorted = Array.from(videos).sort((a, b) => Number(b[sortKey]) - Number(a[sortKey]));
-
   const html = `
     <table style="color: hsl(0, 0%, 6.7%); font-family: Roboto, Arial, sans-serif; border-spacing: 1em;">
       <thead>
@@ -134,7 +135,7 @@ function print(videos, sortKey) {
           <td>${video.viewCount}</td>
           <td>${Number(video.averageRating).toFixed(2)}</td>
 		  <td>${youtubeAuthorLink(video.channelId, video.author)}</a></td>
-		  <td>${convertHMS(video.lengthSeconds)}</td>
+		  <td>${myTime(video.lengthSeconds)}</td>
           <td>${youtubeLink(video.videoId, `<img src="${video.thumbnail.thumbnails[0].url}">`)}</td>
           <td>${youtubeLink(video.videoId, video.title)}</a></td>
         </tr>
@@ -188,6 +189,9 @@ async function main() {
 
     logStatus(videos.length, ids.length);
   }
+  
+ 
+  
 
   window.videos = {
     data: videos,
