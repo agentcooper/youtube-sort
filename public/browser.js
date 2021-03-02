@@ -92,6 +92,19 @@ async function getVideoDetails(id) {
   }
 }
 
+function myTime(time) {
+            var hr = ~~(time / 3600);
+            var min = ~~((time % 3600) / 60);
+            var sec = time % 60;
+            var sec_min = "";
+            if (hr > 0) {
+               sec_min += "" + hrs + ":" + (min < 10 ? "0" : "");
+            }
+            sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
+            sec_min += "" + sec;
+            return sec_min;
+}
+		 
 function youtubeLink(videoId, children) {
   return `<a href="/watch?v=${videoId}" target="_blank">${children}</a>`;
 }
@@ -111,6 +124,8 @@ function print(videos, sortKey) {
           <th onclick="javascript:window.videos.print('viewCount')" style="cursor: pointer; border-bottom: 1px solid;">View count</th>
           <th onclick="javascript:window.videos.print('averageRating')" style="cursor: pointer; border-bottom: 1px solid;">Average rating</th>
           <th onclick="javascript:window.videos.print('author')" style="cursor: pointer; border-bottom: 1px solid;">Author</th>
+		  <th onclick="javascript:window.videos.print('unlisted')" style="cursor: pointer; border-bottom: 1px solid;">Unlisted</th>
+		  <th onclick="javascript:window.videos.print('lengthSeconds')" style="cursor: pointer; border-bottom: 1px solid;">Length</th>
 		  <th></th>
           <th>Video</th>
         </tr>
@@ -122,6 +137,8 @@ function print(videos, sortKey) {
           <td>${video.viewCount}</td>
           <td>${Number(video.averageRating).toFixed(2)}</td>
 		  <td>${youtubeAuthorLink(video.channelId, video.author)}</a></td>
+		  <td>${video.isPrivate}</td>
+		  <td>${myTime(video.lengthSeconds)}</td>
           <td>${youtubeLink(video.videoId, `<img src="${video.thumbnail.thumbnails[0].url}">`)}</td>
           <td>${youtubeLink(video.videoId, video.title)}</a></td>
         </tr>
