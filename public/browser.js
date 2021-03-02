@@ -1,5 +1,4 @@
 /* run on playlist page */
-
 async function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -8,7 +7,7 @@ function cache(fn) {
   return async function (...args) {
     const key = `${fn.name}(${JSON.stringify(args)})`;
 
-    try {
+    try { 
       const item = localStorage.getItem(key);
       if (typeof item === "string") {
         return JSON.parse(item);
@@ -97,6 +96,10 @@ function youtubeLink(videoId, children) {
   return `<a href="/watch?v=${videoId}" target="_blank">${children}</a>`;
 }
 
+function youtubeAuthorLink(channelId, children) {
+  return `<a href="/channel/${channelId}" target="_blank">${children}</a>`;
+}
+
 function print(videos, sortKey) {
   const sorted = Array.from(videos).sort((a, b) => Number(b[sortKey]) - Number(a[sortKey]));
 
@@ -107,7 +110,8 @@ function print(videos, sortKey) {
           <th></th>
           <th onclick="javascript:window.videos.print('viewCount')" style="cursor: pointer; border-bottom: 1px solid;">View count</th>
           <th onclick="javascript:window.videos.print('averageRating')" style="cursor: pointer; border-bottom: 1px solid;">Average rating</th>
-          <th></th>
+          <th onclick="javascript:window.videos.print('author')" style="cursor: pointer; border-bottom: 1px solid;">Author</th>
+		  <th></th>
           <th>Video</th>
         </tr>
       </thead>
@@ -117,6 +121,7 @@ function print(videos, sortKey) {
           <td style="color: hsla(0, 0%, 6.7%, .6);">${index + 1}</td>
           <td>${video.viewCount}</td>
           <td>${Number(video.averageRating).toFixed(2)}</td>
+		  <td>${youtubeAuthorLink(video.channelId, video.author)}</a></td>
           <td>${youtubeLink(video.videoId, `<img src="${video.thumbnail.thumbnails[0].url}">`)}</td>
           <td>${youtubeLink(video.videoId, video.title)}</a></td>
         </tr>
