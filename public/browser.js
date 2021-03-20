@@ -19,7 +19,11 @@ function cache(fn) {
     }
 
     const json = await fn(...args);
-    localStorage.setItem(key, JSON.stringify(json));
+    try {
+	    localStorage.setItem(key, JSON.stringify(json));
+    } catch (e) {
+	    // failed saving to cache
+    }
     return json;
   }
 }
@@ -86,7 +90,8 @@ async function getVideoDetails(id) {
 
   try {
     const playerResponse = jsonArray.find(item => Boolean(item.playerResponse)).playerResponse;
-    return playerResponse.videoDetails;
+    const isUnlisted = playerResponse.microformat.playerMicroformatRenderer.isUnlisted;
+	return playerResponse.videoDetails;
   } catch (e) {
     console.error(`Failed to get videoDetails from`, jsonArray);
   }
