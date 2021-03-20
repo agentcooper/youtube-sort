@@ -1,4 +1,5 @@
 /* run on playlist page */
+
 async function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -7,7 +8,7 @@ function cache(fn) {
   return async function (...args) {
     const key = `${fn.name}(${JSON.stringify(args)})`;
 
-    try { 
+    try {
       const item = localStorage.getItem(key);
       if (typeof item === "string") {
         return JSON.parse(item);
@@ -90,46 +91,31 @@ async function getVideoDetails(id) {
 
   try {
     const playerResponse = jsonArray.find(item => Boolean(item.playerResponse)).playerResponse;
-    const isUnlisted = playerResponse.microformat.playerMicroformatRenderer.isUnlisted;
-	return playerResponse.videoDetails;
+    const ownerChannelName = playerResponse.microformat.playerMicroformatRenderer.ownerChannelName;
+    return { ...playerResponse.videoDetails, ownerChannelName };
   } catch (e) {
     console.error(`Failed to get videoDetails from`, jsonArray);
   }
 }
 
-function myTime(time) {
-            var hr = ~~(time / 3600);
-            var min = ~~((time % 3600) / 60);
-            var sec = time % 60;
-            var sec_min = "";
-            if (hr > 0) {
-               sec_min += "" + hrs + ":" + (min < 10 ? "0" : "");
-            }
-            sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
-            sec_min += "" + sec;
-            return sec_min;
-}
-		 
 function youtubeLink(videoId, children) {
   return `<a href="/watch?v=${videoId}" target="_blank">${children}</a>`;
 }
 
-function youtubeAuthorLink(channelId, children) {
-  return `<a href="/channel/${channelId}" target="_blank">${children}</a>`;
-}
-
 function print(videos, sortKey) {
-  const sorted = Array.from(videos).sort((a, b) => Number(b[sortKey]) - Number(a[sortKey]));
+  const sorted = Array.from(videos).sort((a, b) => {
+	if (a[sortKey] > b[sortKey]) return 1;
+	if (a[sortKey] < b[sortKey]) return -1;
+	return 0;
+  });
+
   const html = `
     <table style="color: hsl(0, 0%, 6.7%); font-family: Roboto, Arial, sans-serif; border-spacing: 1em;">
       <thead>
         <tr>
           <th></th>
-          <th onclick="javascript:window.videos.print('viewCount')" style="cursor: pointer; border-bottom: 1px solid;">View count</th>
-          <th onclick="javascript:window.videos.print('averageRating')" style="cursor: pointer; border-bottom: 1px solid;">Average rating</th>
-          <th onclick="javascript:window.videos.print('author')" style="cursor: pointer; border-bottom: 1px solid;">Author</th>
-		  <th onclick="javascript:window.videos.print('lengthSeconds')" style="cursor: pointer; border-bottom: 1px solid;">Length</th>
-		  <th></th>
+          <th style="cursor: pointer; border-bottom: 1px solid;">${sortKey}</th>
+          <th></th>
           <th>Video</th>
         </tr>
       </thead>
@@ -137,10 +123,7 @@ function print(videos, sortKey) {
       ${sorted.map((video, index) => `
         <tr style="padding: 1em;">
           <td style="color: hsla(0, 0%, 6.7%, .6);">${index + 1}</td>
-          <td>${video.viewCount}</td>
-          <td>${Number(video.averageRating).toFixed(2)}</td>
-		  <td>${youtubeAuthorLink(video.channelId, video.author)}</a></td>
-		  <td>${myTime(video.lengthSeconds)}</td>
+          <td>${video[sortKey]}</td>
           <td>${youtubeLink(video.videoId, `<img src="${video.thumbnail.thumbnails[0].url}">`)}</td>
           <td>${youtubeLink(video.videoId, video.title)}</a></td>
         </tr>
@@ -179,7 +162,7 @@ async function main() {
   const ids = getPageIds();
   console.log(`Found ${ids.length} videos`);
 
-  const getVideoDetailsCached = cache(getVideoDetails);
+  const getVideoDetailsCached = (getVideoDetails);
 
   let videos = [];
   for (const id of ids) {
@@ -194,13 +177,10 @@ async function main() {
 
     logStatus(videos.length, ids.length);
   }
-  
- 
-  
 
   window.videos = {
     data: videos,
-    print(sortKey = "viewCount") {
+    print(sortKey = "ownerChannelName") {
       return print(this.data, sortKey)
     }
   };
